@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FranceMap } from './components/FranceMap';
+import { FranceHexMap } from './components/FranceHexMap';
 import { RegionDetails } from './components/RegionDetails';
 import { DashboardCharts } from './components/DashboardCharts';
 import { StatCards } from './components/StatCards';
@@ -73,7 +73,7 @@ const regionsData = {
     ias: 183,
   },
   pac: {
-    name: 'Provence-Alpes-Côte d\'Azur',
+    name: "Provence-Alpes-Côte d'Azur",
     vaccinationRate: 58,
     urgencyVisits: 1560,
     vaccineStock: 58,
@@ -152,7 +152,7 @@ export default function App() {
                   Cliquez sur une région pour voir les détails
                 </p>
                 <div className="h-[600px]">
-                  <FranceMap
+                  <FranceHexMap
                     onRegionClick={handleRegionClick}
                     selectedRegion={selectedRegion}
                     regionsData={regionsData}
@@ -229,3 +229,4 @@ export default function App() {
     </div>
   );
 }
+
