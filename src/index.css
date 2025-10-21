@@ -1637,3 +1637,82 @@ html {
   inherits: false;
   initial-value: solid;
 }
+
+
+/* TEST, DELETE LATER
+Vaccination Rate Palettes (4 bins)
+   Bins (left → right): 
+   Très faible <45% | Faible 45–59% | Moyen 60–74% | Excellent ≥75%
+   Usage: set an attribute on <html> or :root like [data-palette="traffic"] to switch palette,
+   then reference variables: var(--vacc-very-low), var(--vacc-low), var(--vacc-med), var(--vacc-high).
+*/
+
+/* ===========================
+   Variant 1 — Traffic (red→green)
+   =========================== */
+:root[data-palette="traffic"] {
+  --vacc-very-low: #fd3f43; /* <45% — Très faible */
+  --vacc-low:      #FDAE61; /* 45–59% — Faible */
+  --vacc-med:      #A6D96A; /* 60–74% — Moyen */
+  --vacc-high:     #1A9641; /* ≥75% — Excellent */
+}
+
+/* ===========================
+   Variant 2 — Blues (sequential)
+   =========================== */
+:root[data-palette="blues"] {
+  --vacc-very-low: #DEEBF7; /* <45% — Très faible */
+  --vacc-low:      #9ECAE1; /* 45–59% — Faible */
+  --vacc-med:      #4292C6; /* 60–74% — Moyen */
+  --vacc-high:     #08519C; /* ≥75% — Excellent */
+}
+
+/* ===========================
+   Variant 3 — Viridis (perceptual)
+   =========================== */
+:root[data-palette="viridis"] {
+  --vacc-very-low: #440154; /* <45% — Très faible */
+  --vacc-low:      #31688E; /* 45–59% — Faible */
+  --vacc-med:      #35B779; /* 60–74% — Moyen */
+  --vacc-high:     #FDE725; /* ≥75% — Excellent */
+}
+
+/* ===========================
+   Variant 4 — Cividis (CVD-friendly)
+   =========================== */
+:root[data-palette="cividis"] {
+  --vacc-very-low: #00204C; /* <45% — Très faible */
+  --vacc-low:      #405A74; /* 45–59% — Faible */
+  --vacc-med:      #7E8B55; /* 60–74% — Moyen */
+  --vacc-high:     #FDE333; /* ≥75% — Excellent */
+}
+
+/* ===========================
+   Variant 5 — Okabe–Ito (colorblind-safe)
+   =========================== */
+:root[data-palette="okabe-ito"] {
+  --vacc-very-low: #D55E00; /* <45% — Très faible */
+  --vacc-low:      #E69F00; /* 45–59% — Faible */
+  --vacc-med:      #56B4E9; /* 60–74% — Moyen */
+  --vacc-high:     #009E73; /* ≥75% — Excellent */
+}
+
+/* ---------- Optional helpers ----------
+Example usage:
+
+  <html data-palette="traffic">
+  <div class="vacc very-low">…</div>
+
+You can map your bins to styles like:
+
+*/
+.vacc.very-low { background: var(--vacc-very-low); }
+.vacc.low      { background: var(--vacc-low); }
+.vacc.med      { background: var(--vacc-med); }
+.vacc.high     { background: var(--vacc-high); }
+
+/* Optional text contrast helpers (override per component as needed) */
+.text-dark { color: #0B0B0B; }
+.text-light { color: #FFFFFF; }
+
+/* End of file */

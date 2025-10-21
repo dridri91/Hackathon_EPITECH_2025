@@ -63,10 +63,10 @@ export function FranceHexMap({
     const data = regionsData[key as keyof typeof regionsData];
     if (!data) return '#e5e7eb';
     const rate = data.vaccinationRate;
-    if (rate >= 75) return '#10b981';
-    if (rate >= 60) return '#fbbf24';
-    if (rate >= 45) return '#f97316';
-    return '#ef4444';
+    if (rate >= 75) return '#08519C';
+    if (rate >= 60) return '#4292C6';
+    if (rate >= 45) return '#9ECAE1';
+    return '#DEEBF7';
   };
 
   // Projection tuned for France mÃ©tropolitaine ("Hexagone")
@@ -149,7 +149,7 @@ export function FranceHexMap({
         </div>
       )}
 
-      {/* LÃ©gende */}
+      {/* Légende */}
       <div className="absolute bottom-4 left-4 bg-white dark:bg-slate-800 p-4 rounded-md shadow-lg border border-slate-200 dark:border-slate-700 z-40">
         <p className="mb-2 text-slate-700 dark:text-slate-300 text-sm">Taux de vaccination</p>
         <div className="space-y-2">

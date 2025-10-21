@@ -11,42 +11,42 @@ import { Activity } from 'lucide-react';
 const regionsData = {
   idf: {
     name: 'Île-de-France',
-    vaccinationRate: 68,
+    vaccinationRate: 80,
     urgencyVisits: 3240,
     vaccineStock: 62,
     ias: 198,
   },
   hdf: {
     name: 'Hauts-de-France',
-    vaccinationRate: 54,
+    vaccinationRate: 20,
     urgencyVisits: 1580,
     vaccineStock: 71,
     ias: 156,
   },
   nor: {
     name: 'Normandie',
-    vaccinationRate: 62,
+    vaccinationRate: 50,
     urgencyVisits: 890,
     vaccineStock: 78,
     ias: 142,
   },
   bre: {
     name: 'Bretagne',
-    vaccinationRate: 70,
+    vaccinationRate: 10,
     urgencyVisits: 720,
     vaccineStock: 82,
     ias: 128,
   },
   pdl: {
     name: 'Pays de la Loire',
-    vaccinationRate: 66,
+    vaccinationRate: 45,
     urgencyVisits: 980,
     vaccineStock: 75,
     ias: 138,
   },
   cvl: {
     name: 'Centre-Val de Loire',
-    vaccinationRate: 59,
+    vaccinationRate: 70,
     urgencyVisits: 650,
     vaccineStock: 68,
     ias: 145,
@@ -144,11 +144,11 @@ export default function App() {
           </TabsContent>
 
           {/* Map Tab */}
-          <TabsContent value="map" className="space-y-6">
+          <TabsContent value="map" className="space-y-3">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <Card className="lg:col-span-2 p-6">
-                <h2 className="mb-2">Carte des régions françaises</h2>
-                <p className="text-sm text-muted-foreground mb-3">
+              <Card className="lg:col-span-2 p-4">
+                <h3 className="mb-0">Carte des régions françaises</h3>
+                <p className="text-sm text-muted-foreground mb-1">
                   Cliquez sur une région pour voir les détails
                 </p>
                 <div className="h-[600px]">
