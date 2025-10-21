@@ -159,11 +159,11 @@ export function FranceHexMap({
           </div>
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 rounded" style={{ backgroundColor: '#fbbf24' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">60% à 74% - Moyen</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">60-74% - Moyen</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 rounded" style={{ backgroundColor: '#f97316' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">45% à 59% - Faible</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">45-59% - Faible</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 rounded" style={{ backgroundColor: '#ef4444' }} />
@@ -174,4 +174,9 @@ export function FranceHexMap({
     </div>
   );
 }
+
+
+
+
+
 
