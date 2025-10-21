@@ -48,6 +48,7 @@ export function RegionDetails({ region }: RegionDetailsProps) {
             <span className="min-w-[3rem] text-right">{region.vaccinationRate}%</span>
           </div>
         </div>
+        
 
         {/* IAS - Indicateur Avancé Sanitaire */}
         <div>

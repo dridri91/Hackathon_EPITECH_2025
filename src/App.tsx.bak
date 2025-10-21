@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { FranceHexMap } from './components/FranceHexMap';
 import { RegionDetails } from './components/RegionDetails';
 import { ForecastSidebar } from './components/ForecastSidebar';
@@ -8,10 +8,10 @@ import { Card } from './components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Activity } from 'lucide-react';
 
-// Données mockées pour chaque région
+// DonnÃ©es mockÃ©es pour chaque rÃ©gion
 const regionsData = {
   idf: {
-    name: 'Île-de-France',
+    name: 'ÃŽle-de-France',
     vaccinationRate: 68,
     urgencyVisits: 3240,
     vaccineStock: 62,
@@ -67,14 +67,14 @@ const regionsData = {
     ias: 167,
   },
   ara: {
-    name: 'Auvergne-Rhône-Alpes',
+    name: 'Auvergne-RhÃ´ne-Alpes',
     vaccinationRate: 72,
     urgencyVisits: 1890,
     vaccineStock: 65,
     ias: 183,
   },
   pac: {
-    name: "Provence-Alpes-Côte d'Azur",
+    name: "Provence-Alpes-CÃ´te d'Azur",
     vaccinationRate: 58,
     urgencyVisits: 1560,
     vaccineStock: 58,
@@ -88,7 +88,7 @@ const regionsData = {
     ias: 171,
   },
   bfc: {
-    name: 'Bourgogne-Franche-Comté',
+    name: 'Bourgogne-Franche-ComtÃ©',
     vaccinationRate: 63,
     urgencyVisits: 780,
     vaccineStock: 80,
@@ -105,6 +105,7 @@ const regionsData = {
 
 export default function App() {
   const [selectedRegion, setSelectedRegion] = useState<string | null>('idf');
+ 
 
   const handleRegionClick = (regionId: string) => {
     setSelectedRegion(regionId);
@@ -120,9 +121,9 @@ export default function App() {
               <Activity className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-blue-600">Stratégie Vaccinale Grippe</h1>
+              <h1 className="text-blue-600">StratÃ©gie Vaccinale Grippe</h1>
               <p className="text-sm text-muted-foreground">
-                Optimisation et prédiction des besoins - Hackathon EPITECH
+                Optimisation et prÃ©diction des besoins - Hackathon EPITECH
               </p>
             </div>
           </div>
@@ -155,11 +156,11 @@ export default function App() {
           <TabsContent value="map" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Card className="lg:col-span-2 p-6">
-                <h2 className="mb-2">Carte des régions françaises</h2>
+                <h2 className="mb-2">Carte des rÃ©gions franÃ§aises</h2>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Cliquez sur une région pour voir les détails
+                  Cliquez sur une rÃ©gion pour voir les dÃ©tails
                 </p>
-
+ 
                 <div className="h-[600px]">
                   <FranceHexMap
                     onRegionClick={handleRegionClick}
@@ -181,12 +182,56 @@ export default function App() {
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Card className="lg:col-span-2 p-6">
-                <h2 className="mb-4">Analyses prédictives</h2>
+                <h2 className="mb-4">Analyses prÃ©dictives</h2>
                 <DashboardCharts regionsData={regionsData} />
               </Card>
 
-              {/* Liste prédictive des régions pour l'année suivante */}
-              <ForecastSidebar regionsData={regionsData} />
+              <Card className="p-6">
+                <h3 className="mb-4">Zones prioritaires</h3>
+                <div className="space-y-4">
+                  {Object.entries(regionsData)
+                    .sort((a, b) => a[1].vaccinationRate - b[1].vaccinationRate)
+                    .slice(0, 5)
+                    .map(([id, region]) => (
+                      <div
+                        key={id}
+                        className="p-4 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800 cursor-pointer hover:bg-red-100 dark:hover:bg-red-950/30 transition-colors"
+                        onClick={() => {
+                          setSelectedRegion(id);
+                        }}
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <span>{region.name}</span>
+                          <span className="text-red-600">{region.vaccinationRate}%</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Taux de vaccination faible - Action requise
+                        </p>
+                      </div>
+                    ))}
+                </div>
+
+                <h3 className="mt-8 mb-4">Recommandations gÃ©nÃ©rales</h3>
+                <div className="space-y-3 text-sm">
+                  <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                    <p>
+                      <strong>Grand Est & Hauts-de-France:</strong> Renforcer les campagnes de
+                      sensibilisation
+                    </p>
+                  </div>
+                  <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                    <p>
+                      <strong>PACA & IDF:</strong> Anticiper la hausse des passages aux urgences
+                    </p>
+                  </div>
+                  <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                    <p>
+                      <strong>Toutes rÃ©gions:</strong> Optimiser la distribution des vaccins en
+                      pharmacie
+                    </p>
+                  </div>
+                </div>
+              </Card>
             </div>
           </TabsContent>
         </Tabs>
@@ -194,4 +239,5 @@ export default function App() {
     </div>
   );
 }
+
 
