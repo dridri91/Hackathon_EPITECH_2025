@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FranceHexMap } from './components/FranceHexMap';
 import { RegionDetails } from './components/RegionDetails';
 import { ForecastSidebar } from './components/ForecastSidebar';
@@ -7,6 +7,8 @@ import { StatCards } from './components/StatCards';
 import { Card } from './components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Activity } from 'lucide-react';
+import ForecastCard from './components/ForecastCard';
+import Papa from "papaparse";
 
 // Données mockées pour chaque région
 const regionsData = {
@@ -104,8 +106,56 @@ const regionsData = {
 };
 
 export default function App() {
-  const [selectedRegion, setSelectedRegion] = useState<string | null>('idf');
+	const [history, setHistory] = useState<{date:string; value:number}[] | null>(null);
+	const [selectedRegion, setSelectedRegion] = useState<string | null>('idf');
 
+useEffect(() => {
+  Papa.parse("/data/vaccinations.csv", {
+    download: true,
+    header: true,
+    dynamicTyping: true,
+    skipEmptyLines: true,
+    complete: (res) => {
+      try {
+        const rows = (res.data as any[]).filter(r => r && r.date && r.variable && r.valeur != null);
+
+        // 1) Choisir la métrique à prévoir
+        //    -> garde uniquement les lignes "DOSES(J07E1)" (tu peux changer pour "ACTE(VGP)" si tu préfères)
+        const metric = "ACTE(VGP)";
+        const filtered = rows.filter(r => r.variable === metric);
+
+        // 2) (Optionnel) agréger les groupes (ex: "65 ans et plus" + "moins de 65 ans")
+        //    On somme par mois (clé YYYY-MM-01)
+        const monthKey = (iso: string) => {
+          const d = new Date(iso);
+          const y = d.getFullYear();
+          const m = String(d.getMonth() + 1).padStart(2, "0");
+          return `${y}-${m}-01`;
+        };
+
+        const byMonth = new Map<string, number>();
+        for (const r of filtered) {
+          const key = monthKey(String(r.date));
+          const val = Number(r.valeur);
+          if (!Number.isFinite(val)) continue;
+          byMonth.set(key, (byMonth.get(key) ?? 0) + val);
+        }
+
+        // 3) Construire l'historique {date,value} trié
+        const historyArr = Array.from(byMonth.entries())
+          .map(([date, value]) => ({ date, value }))
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+        console.log("History (monthly, summed):", historyArr.slice(0, 6), "…");
+        setHistory(historyArr);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    error: (err) => console.error(err),
+  });
+}, []);
+	
   const handleRegionClick = (regionId: string) => {
     setSelectedRegion(regionId);
   };
@@ -180,13 +230,14 @@ export default function App() {
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+							{history ? <ForecastCard history={history} /> : <p>Chargement du CSV…</p>}
               <Card className="lg:col-span-2 p-6">
                 <h2 className="mb-4">Analyses prédictives</h2>
                 <DashboardCharts regionsData={regionsData} />
               </Card>
 
               {/* Liste prédictive des régions pour l'année suivante */}
-              <ForecastSidebar regionsData={regionsData} />
+              {/* <ForecastSidebar regionsData={regionsData} /> */}
             </div>
           </TabsContent>
         </Tabs>
