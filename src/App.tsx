@@ -147,8 +147,8 @@ export default function App() {
           <TabsContent value="map" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Card className="lg:col-span-2 p-6">
-                <h2 className="mb-4">Carte des régions françaises</h2>
-                <p className="text-sm text-muted-foreground mb-6">
+                <h2 className="mb-2">Carte des régions françaises</h2>
+                <p className="text-sm text-muted-foreground mb-3">
                   Cliquez sur une région pour voir les détails
                 </p>
                 <div className="h-[600px]">

@@ -1,5 +1,5 @@
 ﻿import { useMemo, useState } from 'react';
-import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
+import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
 interface RegionData {
   name: string;
@@ -73,7 +73,7 @@ export function FranceHexMap({
   const projectionConfig = useMemo(
     () => ({
       center: [2.5, 46.5],
-      scale: 2600,
+      scale: 3800,
     }),
     []
   );
@@ -90,42 +90,40 @@ export function FranceHexMap({
           height={700}
           style={{ width: '100%', height: '100%' }}
         >
-          <ZoomableGroup minZoom={0.9} maxZoom={6} translateExtent={[[0, 0], [800, 700]]}>
-            <Geographies geography={geographyUrl}>
-              {({ geographies }) =>
-                geographies
-                  .filter((geo) => {
-                    const name = (geo.properties?.nom || geo.properties?.NAME_1 || '') as string;
-                    return !!name;
-                  })
-                  .map((geo) => {
-                    const name = (geo.properties?.nom || geo.properties?.NAME_1 || '') as string;
-                    const key = toKey(name);
-                    const isSelected = key && selectedRegion === key;
-                    const isHovered = key && hoveredKey === key;
-                    const color = getRegionColor(key);
+					<Geographies geography={geographyUrl}>
+						{({ geographies }) =>
+							geographies
+								.filter((geo) => {
+									const name = (geo.properties?.nom || geo.properties?.NAME_1 || '') as string;
+									return !!name;
+								})
+								.map((geo) => {
+									const name = (geo.properties?.nom || geo.properties?.NAME_1 || '') as string;
+									const key = toKey(name);
+									const isSelected = key && selectedRegion === key;
+									const isHovered = key && hoveredKey === key;
+									const color = getRegionColor(key);
 
-                    return (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        fill={color}
-                        stroke={isSelected ? '#1e40af' : isHovered ? '#3b82f6' : '#64748b'}
-                        strokeWidth={isSelected ? 2.4 : isHovered ? 2 : 1.2}
-                        style={{
-                          default: { outline: 'none', transition: 'all 200ms ease' },
-                          hover: { outline: 'none', filter: 'brightness(1.06)' },
-                          pressed: { outline: 'none' },
-                        }}
-                        onClick={() => key && onRegionClick(key)}
-                        onMouseEnter={() => setHoveredKey(key)}
-                        onMouseLeave={() => setHoveredKey(null)}
-                      />
-                    );
-                  })
-              }
-            </Geographies>
-          </ZoomableGroup>
+									return (
+										<Geography
+											key={geo.rsmKey}
+											geography={geo}
+											fill={color}
+											stroke={isSelected ? '#1e40af' : isHovered ? '#3b82f6' : '#64748b'}
+											strokeWidth={isSelected ? 2.4 : isHovered ? 2 : 1.2}
+											style={{
+												default: { outline: 'none', transition: 'all 200ms ease' },
+												hover: { outline: 'none', filter: 'brightness(1.06)' },
+												pressed: { outline: 'none' },
+											}}
+											onClick={() => key && onRegionClick(key)}
+											onMouseEnter={() => setHoveredKey(key)}
+											onMouseLeave={() => setHoveredKey(null)}
+										/>
+									);
+								})
+						}
+					</Geographies>
         </ComposableMap>
       </div>
 
@@ -147,7 +145,7 @@ export function FranceHexMap({
               <span className="text-slate-900 dark:text-slate-100">{hoveredData.urgencyVisits.toLocaleString()}</span>
             </div>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 italic">Cliquez pour sÃ©lectionner</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 italic">Cliquez pour sélectionner</p>
         </div>
       )}
 
@@ -157,19 +155,19 @@ export function FranceHexMap({
         <div className="space-y-2">
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 rounded" style={{ backgroundColor: '#10b981' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">â‰¥ 75% - Excellent</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400"> &gt; 75% - Excellent</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 rounded" style={{ backgroundColor: '#fbbf24' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">60â€“74% - Moyen</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">60% à 74% - Moyen</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 rounded" style={{ backgroundColor: '#f97316' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">45â€“59% - Faible</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">45% à 59% - Faible</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 rounded" style={{ backgroundColor: '#ef4444' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">&lt; 45% - TrÃ¨s faible</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">&lt; 45% - Très faible</span>
           </div>
         </div>
       </div>
