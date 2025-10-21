@@ -80,6 +80,17 @@ export function FranceHexMap({
 
   const hoveredData = hoveredKey ? regionsData[hoveredKey as keyof typeof regionsData] : null;
 
+	const LegendItem = ({ color, label }: { color: string; label: string }) => (
+		<div className="flex items-center gap-3">
+			<span
+				aria-hidden
+				className="inline-block rounded border border-slate-300/50 dark:border-slate-700/50 align-middle"
+				style={{ backgroundColor: color, width: 16, height: 16 }}
+			/>
+			<span className="text-xs text-slate-600 dark:text-slate-400 tabular-nums">{label}</span>
+		</div>
+	);
+
   return (
     <div className="relative w-full h-full rounded-xl bg-gradient-to-br from-blue-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 p-3">
       <div className="w-full h-full rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm bg-white/60 dark:bg-slate-900/40 backdrop-blur">
@@ -153,30 +164,13 @@ export function FranceHexMap({
       <div className="absolute bottom-4 left-4 bg-white dark:bg-slate-800 p-4 rounded-md shadow-lg border border-slate-200 dark:border-slate-700 z-40">
         <p className="mb-2 text-slate-700 dark:text-slate-300 text-sm">Taux de vaccination</p>
         <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 rounded" style={{ backgroundColor: '#10b981' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400"> &gt; 75% - Excellent</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 rounded" style={{ backgroundColor: '#fbbf24' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">60-74% - Moyen</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 rounded" style={{ backgroundColor: '#f97316' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">45-59% - Faible</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 rounded" style={{ backgroundColor: '#ef4444' }} />
-            <span className="text-xs text-slate-600 dark:text-slate-400">&lt; 45% - Très faible</span>
-          </div>
+				    <LegendItem color="#08519C" label={"> 75% - Excellent"} />
+						<LegendItem color="#4292C6" label={"60% à 74% - Moyen"} />
+						<LegendItem color="#9ECAE1" label={"45% à 59% - Faible"} />
+						<LegendItem color="#DEEBF7" label={"< 45% - Très faible"} />
         </div>
       </div>
     </div>
   );
 }
-
-
-
-
-
 
