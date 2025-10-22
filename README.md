@@ -40,31 +40,19 @@ Elle a été conçue dans le cadre d’un projet d’innovation / hackathon auto
 
 # Installation et exécution
 
-Build the Docker image
-
-```bash
-docker build -t predivax .
-```
-
-## Run the container
-
-```bash
-docker run -p 8080:80 predivax
-```
-
-## Or use docker-compose
+Use docker-compose
 
 ```bash
 docker-compose up -d
 ```
 
-## Stop the container
+Stop the container
 
 ```bash
 docker-compose down
 ```
 
-## Access
+Access
 
 ```bash
 http://localhost:8080
