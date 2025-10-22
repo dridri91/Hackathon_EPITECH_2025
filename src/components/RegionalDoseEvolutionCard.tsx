@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
@@ -9,9 +9,11 @@ const COLORS = {
   prediction: '#42c646ff',
 };
 
+const NATIONAL_AVERAGE = 'Moyenne nationale';
+
 export default function RegionalDoseEvolutionCard() {
   const [data, setData] = useState<RegionForecast[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState<string>('Île-de-France');
+  const [selectedRegion, setSelectedRegion] = useState<string>(NATIONAL_AVERAGE);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,28 +24,49 @@ export default function RegionalDoseEvolutionCard() {
   }, []);
 
   const regions = Array.from(new Set(data.map(d => d.region))).sort();
-  const regionData = data
-    .filter(d => d.region === selectedRegion)
-    .sort((a, b) => a.year - b.year);
+	const nationalData = useMemo(() => {
+		const yearMap = new Map<number, { actes: number, isPrediction: boolean }>();
+		
+		data.forEach(d => {
+			const existing = yearMap.get(d.year) || { actes: 0, isPrediction: d.isPrediction };
+			yearMap.set(d.year, {
+				actes: existing.actes + d.actes,
+				isPrediction: d.isPrediction
+			});
+		});
+		
+		return Array.from(yearMap.entries()).map(([year, { actes, isPrediction }]) => ({
+			region: NATIONAL_AVERAGE,
+			year,
+			actes,
+			isPrediction
+		}));
+	}, [data]);
 
-  const chartData = regionData.map(d => ({
-    year: d.year.toString(),
-    actes: d.actes,
-    isPrediction: d.isPrediction,
-  }));
+	const regionData = selectedRegion === NATIONAL_AVERAGE
+		? nationalData.sort((a, b) => a.year - b.year)
+		: data
+				.filter(d => d.region === selectedRegion)
+				.sort((a, b) => a.year - b.year);
 
-  const formatNumber = (value: number) => {
-    return value.toLocaleString();
-  };
+	const chartData = regionData.map(d => ({
+		year: d.year.toString(),
+		actes: d.actes,
+		isPrediction: d.isPrediction,
+	}));
 
-  const totalHistorical = regionData
-    .filter(d => !d.isPrediction)
-    .reduce((sum, d) => sum + d.actes, 0);
+	const formatNumber = (value: number) => {
+		return value.toLocaleString();
+	};
 
-  const avgHistorical = Math.round(totalHistorical / regionData.filter(d => !d.isPrediction).length);
-  const prediction2025 = regionData.find(d => d.year === 2025)?.actes || 0;
-  const change = prediction2025 - avgHistorical;
-  const changePercent = ((change / avgHistorical) * 100).toFixed(1);
+	const totalHistorical = regionData
+		.filter(d => !d.isPrediction)
+		.reduce((sum, d) => sum + d.actes, 0);
+
+	const avgHistorical = Math.round(totalHistorical / regionData.filter(d => !d.isPrediction).length);
+	const prediction2025 = regionData.find(d => d.year === 2025)?.actes || 0;
+	const change = prediction2025 - avgHistorical;
+	const changePercent = ((change / avgHistorical) * 100).toFixed(1);
 
   if (loading) {
     return (
@@ -68,6 +91,9 @@ export default function RegionalDoseEvolutionCard() {
               <SelectValue placeholder="Sélectionner une région" />
             </SelectTrigger>
             <SelectContent>
+							<SelectItem value={NATIONAL_AVERAGE}>
+                <strong>{NATIONAL_AVERAGE}</strong>
+              </SelectItem>
               {regions.map(region => (
                 <SelectItem key={region} value={region}>
                   {region}
@@ -124,7 +150,7 @@ export default function RegionalDoseEvolutionCard() {
               />
               <Bar 
                 dataKey="actes" 
-                name="Actes vaccinaux"
+                name="Doses vaccinales"
                 radius={[8, 8, 0, 0]}
 								fill={COLORS.historical}
               >
@@ -138,6 +164,9 @@ export default function RegionalDoseEvolutionCard() {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
+					<p className="text-xs text-muted-foreground text-center mt-2">
+            *sur 10 000 personnes
+          </p>
         </div>
       </CardContent>
     </Card>

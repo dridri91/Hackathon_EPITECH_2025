@@ -186,7 +186,7 @@ useEffect(() => {
           <TabsList>
             <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
             <TabsTrigger value="map">Carte interactive</TabsTrigger>
-            <TabsTrigger value="analytics">Analyses</TabsTrigger>
+            <TabsTrigger value="analytics">Prédictions</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -234,10 +234,6 @@ useEffect(() => {
 							{history ? <ForecastCard history={history} /> : <p>Chargement du CSV…</p>}
 							<RegionalEvolutionCard />
 							<RegionalDoseEvolutionCard />
-              <Card className="lg:col-span-1 p-6">
-                <h2 className="mb-4">Analyses prédictives</h2>
-                <DashboardCharts regionsData={regionsData} />
-              </Card>
             </div>
           </TabsContent>
         </Tabs>
