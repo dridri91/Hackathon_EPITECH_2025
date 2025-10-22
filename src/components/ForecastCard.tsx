@@ -35,7 +35,7 @@ export default function ForecastCard({ history }: { history: DataPoint[] }) {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle>Prévision Saisonnière</CardTitle>
+        <CardTitle>Prévision Saisonnière des vaccinations</CardTitle>
         <CardDescription>Oct 2025 → Fév 2026</CardDescription>
       </CardHeader>
       <CardContent>

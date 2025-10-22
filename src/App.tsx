@@ -171,9 +171,9 @@ useEffect(() => {
               <Activity className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-blue-600">Stratégie Vaccinale Grippe</h1>
+              <h1 className="text-blue-600">PrédiVax</h1>
               <p className="text-sm text-muted-foreground">
-                Optimisation et prédiction des besoins - Hackathon EPITECH
+                Optimisation des vaccinations
               </p>
             </div>
           </div>
