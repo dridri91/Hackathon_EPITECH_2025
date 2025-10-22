@@ -33,20 +33,20 @@ export function DashboardCharts({ regionsData }: { regionsData: Record<string, R
   const barChartHeight = Math.max(280, byRegionNext.length * 28);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <Card className="p-6">
-        <h3 className="mb-2">Prévision par région ({nextYear})</h3>
-        <ResponsiveContainer width="100%" height={barChartHeight}>
-          <BarChart data={byRegionNext} layout="vertical" margin={{ left: 8, right: 12, top: 8, bottom: 8 }}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-            <XAxis type="number" domain={[0, 100]} className="text-sm" />
-            <YAxis dataKey="region" type="category" className="text-sm" width={160} interval={0} tick={{ fontSize: 12 }} />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="taux" fill="#10b981" name={`Taux ${nextYear} (%)`} />
-          </BarChart>
-        </ResponsiveContainer>
-      </Card>
+    // <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    //   <Card className="p-6">
+    //     <h3 className="mb-2">Prévision par région ({nextYear})</h3>
+    //     <ResponsiveContainer width="100%" height={barChartHeight}>
+    //       <BarChart data={byRegionNext} layout="vertical" margin={{ left: 8, right: 12, top: 8, bottom: 8 }}>
+    //         <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+    //         <XAxis type="number" domain={[0, 100]} className="text-sm" />
+    //         <YAxis dataKey="region" type="category" className="text-sm" width={160} interval={0} tick={{ fontSize: 12 }} />
+    //         <Tooltip />
+    //         <Legend />
+    //         <Bar dataKey="taux" fill="#10b981" name={`Taux ${nextYear} (%)`} />
+    //       </BarChart>
+    //     </ResponsiveContainer>
+    //   </Card>
 
       <Card className="p-6">
         <h3 className="mb-2">Moyenne nationale (actuel vs {nextYear})</h3>
@@ -61,7 +61,7 @@ export function DashboardCharts({ regionsData }: { regionsData: Record<string, R
           </LineChart>
         </ResponsiveContainer>
       </Card>
-    </div>
+    // </div>
   );
 }
 

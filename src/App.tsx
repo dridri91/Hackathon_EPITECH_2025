@@ -9,7 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Activity } from 'lucide-react';
 import ForecastCard from './components/ForecastCard';
 import Papa from "papaparse";
-
+import RegionalEvolutionCard from './components/RegionalEvolutionCard';
+import RegionalDoseEvolutionCard from './components/RegionalDoseEvolutionCard';
 // Données mockées pour chaque région
 const regionsData = {
   idf: {
@@ -231,13 +232,12 @@ useEffect(() => {
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 							{history ? <ForecastCard history={history} /> : <p>Chargement du CSV…</p>}
-              <Card className="lg:col-span-2 p-6">
+							<RegionalEvolutionCard />
+							<RegionalDoseEvolutionCard />
+              <Card className="lg:col-span-1 p-6">
                 <h2 className="mb-4">Analyses prédictives</h2>
                 <DashboardCharts regionsData={regionsData} />
               </Card>
-
-              {/* Liste prédictive des régions pour l'année suivante */}
-              {/* <ForecastSidebar regionsData={regionsData} /> */}
             </div>
           </TabsContent>
         </Tabs>
