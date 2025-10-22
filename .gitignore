@@ -29,3 +29,6 @@ pnpm-debug.log*
 *.swp
 .idea/
 .vscode/
+
+# Docker
+.dockerignore

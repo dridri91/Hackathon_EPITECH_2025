@@ -1,0 +1,11 @@
+services:
+  predivax:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public/data:/usr/share/nginx/html/data:ro
+      - ./public/geo:/usr/share/nginx/html/geo:ro
+    restart: unless-stopped

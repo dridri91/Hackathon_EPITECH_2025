@@ -40,14 +40,18 @@ Elle a été conçue dans le cadre d’un projet d’innovation / hackathon auto
 
 ## Installation et exécution
 
-Cloner le projet puis installer les dépendances :
+# Build the Docker image
 
-```bash
-npm install
-```
+docker build -t predivax .
 
-Lancer le serveur de développement :
+# Run the container
 
-```bash
-npm run dev
-```
+docker run -p 8080:80 predivax
+
+# Or use docker-compose
+
+docker-compose up -d
+
+# Stop the container
+
+docker-compose down
