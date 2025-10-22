@@ -40,19 +40,19 @@ Elle a été conçue dans le cadre d’un projet d’innovation / hackathon auto
 
 # Installation et exécution
 
-Use docker-compose
+Avec docker-compose
 
 ```bash
 docker-compose up -d
 ```
 
-Stop the container
+Arrêter le container
 
 ```bash
 docker-compose down
 ```
 
-Access
+Accès
 
 ```bash
 http://localhost:8080
