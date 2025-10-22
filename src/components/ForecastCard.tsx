@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import type { DataPoint } from "@/lib/seasonalNaive";
-import { seasonalNaiveOctToFeb } from "@/lib/seasonalNaive";
+import type { DataPoint } from "@/lib/seasonalAverage";
+import { seasonalAverageOctToFeb } from "@/lib/seasonalAverage";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -12,7 +12,7 @@ export default function ForecastCard({ history }: { history: DataPoint[] }) {
   const forecast = useMemo(() => {
     try {
       // Oct 2025 → Feb 2026
-      return seasonalNaiveOctToFeb(history, 2025);
+      return seasonalAverageOctToFeb(history, 2025);
     } catch {
       return [];
     }

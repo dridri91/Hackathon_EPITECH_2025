@@ -15,7 +15,7 @@ Elle a été conçue dans le cadre d’un projet d’innovation / hackathon auto
   - Filtrage par indicateur ou par région
   - Import rapide de fichiers CSV
 - Tableau de prédiction
-  - Modèle utilisé : Seasonal Naive
+  - Modèle utilisé : Seasonal Average
   - Prédire en détail le nombre des vaccinations saison à venir (oct 2025 à fév 2026)
   - Prédire l'évolution des actes vaccinaux pour l'année à venir
   - Prédire l'évolution des doses vaccinales pour l'année à venir

@@ -1,14 +1,14 @@
-// src/lib/seasonalNaive.ts
+// src/lib/seasonalAverage.ts
 export type DataPoint = { date: string; value: number }
 export type ForecastPoint = { date: string; value: number }
 
 /**
- * Seasonal Naive for an arbitrary season (e.g., Oct–Feb = [10,11,12,1,2]).
+ * Seasonal Average for an arbitrary season (e.g., Oct–Feb = [10,11,12,1,2]).
  * It finds the most recent *complete* season in history and copies month-by-month.
- * If no complete season exists, falls back to month-wise seasonal naive
+ * If no complete season exists, falls back to month-wise Seasonal Average
  * (latest value for each month across all years).
  */
-export function seasonalNaiveForSeason(
+export function seasonalAverageForSeason(
   data: DataPoint[],
   seasonMonths: number[],         // e.g. [10,11,12,1,2]
   targetYearStart: number,        // e.g. 2025 (anchor at October 2025)
@@ -60,25 +60,61 @@ export function seasonalNaiveForSeason(
       value: byYM.get(lastCompleteSeason!.keys[i])!,
     }));
   }
-
-  // 5) Fallback: month-wise seasonal naive (use latest available same-month)
-  const latestByMonth = new Map<number, number>(); // month -> latest value
-  for (const [key, val] of byYM) {
-    const m = Number(key.slice(5, 7)); // "YYYY-MM"
-    latestByMonth.set(m, val);
-  }
-
-  return targetKeys.map(k => {
-    const m = Number(k.slice(5, 7));
-    const v = latestByMonth.get(m);
-    return { date: k + "-01", value: v ?? NaN };
-  });
 }
 
 /** Convenience wrapper specifically for Oct–Feb  (flu season). */
-export function seasonalNaiveOctToFeb(
+/**
+ * Multi-year average approach (alternative to direct copy)
+ */
+export function seasonalAverageOctToFeb(
   data: DataPoint[],
-  targetAnchorYear: number // e.g. 2025
+  targetAnchorYear: number,
+  yearsToAverage: number = 3 // Average last 3 seasons
 ): ForecastPoint[] {
-  return seasonalNaiveForSeason(data, [10, 11, 12, 1, 2], targetAnchorYear);
+  // Parse data
+  const rows = data
+    .map(d => ({
+      date: new Date(d.date.length === 7 ? d.date + "-01" : d.date),
+      value: d.value,
+    }))
+    .filter(d => !Number.isNaN(d.date.getTime()));
+
+  const byYM = new Map<string, number>();
+  const ym = (y: number, m: number) => `${y}-${String(m).padStart(2, "0")}`;
+  for (const r of rows) {
+    byYM.set(ym(r.date.getFullYear(), r.date.getMonth() + 1), r.value);
+  }
+
+  const seasonMonths = [10, 11, 12, 1, 2];
+  const targetKeys = seasonMonths.map(m => 
+    ym(m >= 10 ? targetAnchorYear : targetAnchorYear + 1, m)
+  );
+
+  // Calculate average for each month across last N years
+  return targetKeys.map(targetKey => {
+    const targetMonth = parseInt(targetKey.split('-')[1]);
+    const values: number[] = [];
+
+    // Collect values from last N years for this month
+    for (let i = 1; i <= yearsToAverage; i++) {
+      const histYear = targetAnchorYear - i;
+      const histKey = ym(
+        targetMonth >= 10 ? histYear : histYear + 1,
+        targetMonth
+      );
+      if (byYM.has(histKey)) {
+        values.push(byYM.get(histKey)!);
+      }
+    }
+
+    // Calculate average
+    const average = values.length > 0
+      ? values.reduce((sum, v) => sum + v, 0) / values.length
+      : 0;
+
+    return {
+      date: targetKey + "-01",
+      value: Math.round(average),
+    };
+  });
 }

@@ -63,7 +63,7 @@ export async function loadRegionsData(type: string): Promise<RegionForecast[]> {
             });
           }
           
-          // Add 2025 predictions using seasonal naive (average of last 3 years)
+          // Add 2025 predictions using Seasonal Average (average of last 3 years)
           const regionYears = new Map<string, number[]>();
           
           for (const item of result) {
