@@ -55,3 +55,7 @@ docker-compose up -d
 # Stop the container
 
 docker-compose down
+
+# Access
+
+http://localhost:8080
